@@ -45,7 +45,7 @@ function HomePage() {
   const [form, setForm] = useState<FormValues>({
     latitude: "",
     longitude: "",
-    groundType: "I",
+    groundType: "II",
     naturalPeriod: 0.3,
   });
   const [results, setResults] = useState<EarthquakeResult[] | null>(null);
