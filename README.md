@@ -1,5 +1,7 @@
 # 日本中の耐震検査
 
+Vite + React + TailwindCSS + Supabase
+
 ### TODO
 
 - [ ] 説明ページの実装
