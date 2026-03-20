@@ -105,6 +105,25 @@ function AboutPage() {
           </section>
 
           <section className="mb-8">
+            <h2 className="text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
+              <span className="w-1 h-5 bg-blue-500 rounded-full inline-block" />
+              地盤種別
+            </h2>
+            <div className="space-y-3">
+              {[
+                { label: "第Ⅰ種（硬質地盤）", desc: "岩盤や砂礫層。最も揺れにくい。", color: "bg-gray-50 text-gray-700 border-gray-200" },
+                { label: "第Ⅱ種（普通地盤）", desc: "洪積層など、比較的しっかりした土砂層。", color: "bg-gray-50 text-gray-700 border-gray-200" },
+                { label: "第Ⅲ種（軟弱地盤）", desc: "沖積層、埋立地、粘性土など。地震の際に最も揺れやすい。", color: "bg-gray-50 text-gray-700 border-gray-200" },
+              ].map((item) => (
+                <div key={item.label} className={`flex gap-3 items-start border rounded-xl px-4 py-3 text-sm ${item.color}`}>
+                  <span className="font-semibold whitespace-nowrap">{item.label}</span>
+                  <span>{item.desc}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-8">
             <h2 className="text-base font-bold text-gray-700 mb-1 flex items-center gap-2">
               <span className="w-1 h-5 bg-blue-500 rounded-full inline-block" />
               固有周期の目安 (s)
