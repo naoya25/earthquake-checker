@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -8,7 +7,8 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl: unknown })
+  ._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
@@ -21,7 +21,11 @@ type Props = {
   onSelect: (lat: number, lng: number) => void;
 };
 
-function ClickHandler({ onSelect }: { onSelect: (lat: number, lng: number) => void }) {
+function ClickHandler({
+  onSelect,
+}: {
+  onSelect: (lat: number, lng: number) => void;
+}) {
   useMapEvents({
     click(e) {
       onSelect(e.latlng.lat, e.latlng.lng);
@@ -36,7 +40,10 @@ function MapSelector({ lat, lng, onSelect }: Props) {
   const defaultZoom = 5;
 
   return (
-    <div className="rounded-xl overflow-hidden border border-gray-200" style={{ height: "320px" }}>
+    <div
+      className="rounded-xl overflow-hidden border border-gray-200"
+      style={{ height: "320px" }}
+    >
       <MapContainer
         center={defaultCenter}
         zoom={defaultZoom}
@@ -47,9 +54,7 @@ function MapSelector({ lat, lng, onSelect }: Props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <ClickHandler onSelect={onSelect} />
-        {lat !== null && lng !== null && (
-          <Marker position={[lat, lng]} />
-        )}
+        {lat !== null && lng !== null && <Marker position={[lat, lng]} />}
       </MapContainer>
     </div>
   );

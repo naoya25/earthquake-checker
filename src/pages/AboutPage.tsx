@@ -230,13 +230,11 @@ function AboutPage() {
             <ul className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
               <li className="flex gap-2">
                 <span className="text-orange-400 mt-0.5">・</span>
-                本アプリで使用する震度は、現行の震度階級ではなく
-                <strong className="text-gray-700">旧震度階級（0〜7）</strong>
-                です。
+                本アプリで使用する震度は、2026年3月現在の震度階級ではなく<strong className="text-gray-700">旧震度階級（0〜7）</strong>です。
               </li>
               <li className="flex gap-2">
                 <span className="text-orange-400 mt-0.5">・</span>
-                掲載している地震の一覧は、一部に解釈が含まれる場合があります。
+                掲載している地震は主要なものに絞っており、抜け漏れが存在する場合があります。また、一部の記録には解釈が含まれます。なお、今後発生する地震が随時追加されるとは限りません。
               </li>
               <li className="flex gap-2">
                 <span className="text-orange-400 mt-0.5">・</span>
