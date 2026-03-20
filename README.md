@@ -1,9 +1,20 @@
 # 日本中の耐震検査
 
-Vite + React + TailwindCSS + Supabase
+建物の緯度・経度・地盤種別・固有周期から、過去の地震に対する推定応答水平加速度（gal）と推定震度を一覧表示するWebアプリ。
 
-### TODO
+## 技術スタック
+
+| カテゴリ         | 技術                                    |
+| ---------------- | --------------------------------------- |
+| フロントエンド   | React 19 + TypeScript + Vite            |
+| スタイリング     | Tailwind CSS v4                         |
+| ルーティング     | React Router v7                         |
+| データベース     | Supabase (PostgreSQL)                   |
+| 地図             | Leaflet + react-leaflet (OpenStreetMap) |
+| ジオコーディング | Nominatim API (OpenStreetMap)           |
+| デプロイ         | GitHub Pages + GitHub Actions           |
+
+## TODO
 
 - [ ] 管理画面の実装(DB編集)
-- [ ] 地図から選択するか、緯度経度を入力するか、住所を入力するか選べるようにする
 - [ ] 年号でフィルター
