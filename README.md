@@ -15,8 +15,3 @@
 | 地図             | Leaflet + react-leaflet (OpenStreetMap) |
 | ジオコーディング | Nominatim API (OpenStreetMap)           |
 | デプロイ         | GitHub Pages + GitHub Actions           |
-
-## TODO
-
-- [ ] 管理画面の実装(DB編集)
-

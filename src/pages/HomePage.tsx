@@ -116,7 +116,7 @@ function HomePage() {
     return { lat, lng };
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const coords = getLatLng();
     if (!coords) {
