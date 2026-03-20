@@ -96,9 +96,12 @@ function HomePage() {
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-md p-8 mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
             地震チェッカー
           </h1>
+          <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+            建物の所在地（緯度・経度）と地盤種別・固有周期を入力することで、過去に発生したすべての地震についての応答水平加速度（gal）と推定震度を一覧で確認できます。
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="flex gap-4">
@@ -138,7 +141,7 @@ function HomePage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                地盤の種類
+                地盤種別
               </label>
               <select
                 value={form.groundType}
@@ -212,13 +215,13 @@ function HomePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+                    <tr className="bg-gray-50 text-gray-500 text-xs tracking-wide">
                       <th className="px-4 py-3 text-left">順位</th>
                       <th className="px-4 py-3 text-left">地震名</th>
                       <th className="px-4 py-3 text-left">発生日</th>
-                      <th className="px-4 py-3 text-right">M</th>
-                      <th className="px-4 py-3 text-right">距離 (km)</th>
-                      <th className="px-4 py-3 text-right">スペクトル値</th>
+                      <th className="px-4 py-3 text-right">マグニチュード</th>
+                      <th className="px-4 py-3 text-right">震央距離 (km)</th>
+                      <th className="px-4 py-3 text-right">応答水平加速度 (gal)</th>
                       <th className="px-4 py-3 text-right">震度 (目安)</th>
                     </tr>
                   </thead>
@@ -242,7 +245,7 @@ function HomePage() {
                           {eq.distanceKm.toFixed(1)}
                         </td>
                         <td className="px-4 py-3 text-right font-semibold text-blue-600">
-                          {eq.spectrum.toFixed(4)}
+                          {Math.round(eq.spectrum)}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <span className={`inline-block font-bold px-2 py-0.5 rounded text-white text-xs ${INTENSITY_COLOR[eq.intensity]}`}>
