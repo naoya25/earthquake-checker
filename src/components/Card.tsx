@@ -4,7 +4,7 @@ import { cn } from "../utils/cn";
 type CardProps = {
   children: ReactNode;
   className?: string;
-  /** Adds an elevate-on-hover shadow transition. Use for clickable/interactive cards. */
+  /** Adds a hover state. Use for clickable/interactive cards. */
   interactive?: boolean;
 };
 
@@ -12,9 +12,9 @@ export function Card({ children, className, interactive = false }: CardProps) {
   return (
     <div
       className={cn(
-        "bg-surface rounded-lg shadow-sm",
+        "bg-surface border-2 border-ink",
         interactive &&
-          "transition-[box-shadow] duration-150 ease-standard hover:shadow-md",
+          "transition-colors duration-100 ease-standard hover:bg-accent/5",
         className,
       )}
     >

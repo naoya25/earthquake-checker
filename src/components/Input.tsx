@@ -10,10 +10,10 @@ export function Input({ className, error = false, ...props }: InputProps) {
     <input
       aria-invalid={error || undefined}
       className={cn(
-        "w-full border rounded-sm px-3 py-2 text-sm text-ink placeholder:text-neutral-400 transition-[border-color,box-shadow] duration-100 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+        "w-full border-2 px-3 py-2 text-sm text-ink bg-surface placeholder:text-ink-muted transition-colors duration-100 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
         error
-          ? "border-error focus-visible:ring-error"
-          : "border-line focus-visible:ring-primary",
+          ? "border-red-600 focus-visible:ring-red-600"
+          : "border-ink focus-visible:border-accent focus-visible:ring-accent",
         className,
       )}
       {...props}
@@ -29,7 +29,7 @@ export function InputHelperText({
   error?: boolean;
 }) {
   return (
-    <p className={cn("text-caption mt-1", error ? "text-error" : "text-neutral-400")}>
+    <p className={cn("text-caption mt-1", error ? "text-red-600" : "text-ink-muted")}>
       {children}
     </p>
   );

@@ -24,15 +24,15 @@ function Layout({ children }: Props) {
   };
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `relative py-1 font-medium transition-colors duration-100 ease-standard ${
+    `relative py-1 font-bold transition-colors duration-100 ease-standard ${
       isActive
-        ? "text-primary after:absolute after:-bottom-[13px] after:left-0 after:right-0 after:h-0.5 after:bg-primary after:rounded-full"
-        : "text-neutral-500 hover:text-neutral-800"
+        ? "text-accent after:absolute after:-bottom-[13px] after:left-0 after:right-0 after:h-1 after:bg-accent"
+        : "text-ink-muted hover:text-ink"
     }`;
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface-subtle">
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200/80">
+    <div className="min-h-screen flex flex-col bg-paper">
+      <header className="sticky top-0 z-40 bg-paper border-b-4 border-ink">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link
             to="/"
@@ -43,7 +43,7 @@ function Layout({ children }: Props) {
               alt="icon"
               className="w-8 h-8 object-contain"
             />
-            <span className="text-h3 font-semibold text-neutral-900 tracking-tight">
+            <span className="text-h3 font-extrabold text-ink tracking-tight">
               地震チェッカー
             </span>
           </Link>
@@ -60,8 +60,8 @@ function Layout({ children }: Props) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="bg-white border-t border-neutral-200 mt-auto">
-        <div className="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-caption text-neutral-400">
+      <footer className="bg-paper border-t-4 border-ink mt-auto">
+        <div className="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-caption text-ink-muted">
           <div className="flex items-center gap-2">
             <img
               src={`${import.meta.env.BASE_URL}icon.png`}

@@ -11,14 +11,14 @@ function AdminPage() {
     <div className="p-4 sm:p-6">
       <div className="max-w-6xl mx-auto">
         <Card className="overflow-hidden">
-          <div className="px-6 py-4 border-b border-neutral-100">
-            <h1 className="text-h2 text-neutral-900">
+          <div className="px-6 py-4 border-b-2 border-ink">
+            <h1 className="text-h2 text-ink">
               地震データ
-              <span className="ml-2 text-sm font-normal text-neutral-400 tabular-nums">
+              <span className="ml-2 text-sm font-normal data-num text-ink-muted">
                 {earthquakes.length} 件
               </span>
             </h1>
-            <p className="text-caption text-neutral-400 mt-1">
+            <p className="text-caption text-ink-muted mt-1">
               データは src/data/earthquakes.json で管理しています。
             </p>
           </div>
@@ -26,41 +26,41 @@ function AdminPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-neutral-50 text-neutral-500 text-xs">
-                  <th className="px-4 py-3 text-left font-medium">No</th>
-                  <th className="px-4 py-3 text-left font-medium">地震名</th>
-                  <th className="px-4 py-3 text-left font-medium">発生日</th>
-                  <th className="px-4 py-3 text-left font-medium">被災地域</th>
-                  <th className="px-4 py-3 text-right font-medium">緯度</th>
-                  <th className="px-4 py-3 text-right font-medium">経度</th>
-                  <th className="px-4 py-3 text-right font-medium">M</th>
+                <tr className="bg-ink text-paper text-xs">
+                  <th className="px-4 py-3 text-left font-bold">No</th>
+                  <th className="px-4 py-3 text-left font-bold">地震名</th>
+                  <th className="px-4 py-3 text-left font-bold">発生日</th>
+                  <th className="px-4 py-3 text-left font-bold">被災地域</th>
+                  <th className="px-4 py-3 text-right font-bold">緯度</th>
+                  <th className="px-4 py-3 text-right font-bold">経度</th>
+                  <th className="px-4 py-3 text-right font-bold">M</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100">
+              <tbody className="divide-y-2 divide-ink">
                 {earthquakes.map((eq) => (
                   <tr
                     key={eq.id}
-                    className="transition-colors duration-100 ease-standard hover:bg-neutral-50"
+                    className="transition-colors duration-100 ease-standard hover:bg-accent/10"
                   >
-                    <td className="px-4 py-3 text-neutral-400 tabular-nums">
+                    <td className="px-4 py-3 data-num text-ink-muted">
                       {eq.no ?? "-"}
                     </td>
-                    <td className="px-4 py-3 font-medium text-neutral-800">
+                    <td className="px-4 py-3 font-bold text-ink">
                       {eq.name ?? "-"}
                     </td>
-                    <td className="px-4 py-3 text-neutral-600">
+                    <td className="px-4 py-3 data-num text-ink">
                       {eq.occurred_date ?? "-"}
                     </td>
-                    <td className="px-4 py-3 text-neutral-600">
+                    <td className="px-4 py-3 text-ink-muted">
                       {eq.affected_area ?? "-"}
                     </td>
-                    <td className="px-4 py-3 text-right tabular-nums text-neutral-600">
+                    <td className="px-4 py-3 text-right data-num text-ink-muted">
                       {eq.latitude ?? "-"}
                     </td>
-                    <td className="px-4 py-3 text-right tabular-nums text-neutral-600">
+                    <td className="px-4 py-3 text-right data-num text-ink-muted">
                       {eq.longitude ?? "-"}
                     </td>
-                    <td className="px-4 py-3 text-right tabular-nums text-neutral-700">
+                    <td className="px-4 py-3 text-right data-num text-ink">
                       {eq.magnitude ?? "-"}
                     </td>
                   </tr>

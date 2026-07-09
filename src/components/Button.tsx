@@ -8,11 +8,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const VARIANT_CLASSES: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary:
-    "bg-primary text-white hover:bg-primary-dark disabled:bg-primary-light disabled:hover:bg-primary-light shadow-sm hover:shadow-md focus-visible:ring-primary",
+    "bg-ink text-paper border-ink hover:bg-accent hover:border-accent disabled:bg-ink-muted disabled:border-ink-muted disabled:hover:bg-ink-muted focus-visible:ring-ink",
   secondary:
-    "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 disabled:text-neutral-400 disabled:hover:bg-neutral-100 focus-visible:ring-neutral-300",
+    "bg-paper text-ink border-ink hover:bg-ink hover:text-paper disabled:text-ink-muted disabled:border-ink-muted disabled:hover:bg-paper disabled:hover:text-ink-muted focus-visible:ring-ink",
   ghost:
-    "bg-transparent text-primary hover:bg-primary/10 disabled:text-neutral-300 disabled:hover:bg-transparent focus-visible:ring-primary",
+    "bg-transparent text-ink border-transparent hover:border-ink disabled:text-ink-muted disabled:hover:border-transparent focus-visible:ring-ink",
 };
 
 const SIZE_CLASSES: Record<NonNullable<ButtonProps["size"]>, string> = {
@@ -30,7 +30,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "font-semibold rounded-md transition-[background-color_100ms_var(--ease-standard),box-shadow_150ms_var(--ease-standard),transform_50ms_var(--ease-out-quart)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100",
+        "font-bold border-2 transition-[background-color,border-color,color,transform] duration-100 ease-standard active:scale-[0.98] active:translate-x-0.5 active:translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:active:scale-100 disabled:active:translate-x-0 disabled:active:translate-y-0",
         VARIANT_CLASSES[variant],
         SIZE_CLASSES[size],
         className,
