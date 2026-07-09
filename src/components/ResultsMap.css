@@ -1,0 +1,47 @@
+/* 結果地図の波紋(リング)アニメーション。
+   Brutalistデザインを維持するため、ぼかし/グロー/影は一切使わず、
+   常に硬い輪郭のフラットなリングとして描画する。 */
+
+.results-map-ripple-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 650;
+  pointer-events: none;
+}
+
+.results-map-ripple-layer .ripple-ring {
+  fill: none;
+  stroke-width: 2.5px;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: results-map-ripple;
+  animation-duration: 2.6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes results-map-ripple {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(6.5);
+    opacity: 0;
+  }
+}
+
+/* prefers-reduced-motion: アニメーションを止め、静的なリングのみ表示する */
+@media (prefers-reduced-motion: reduce) {
+  .results-map-ripple-layer .ripple-ring {
+    animation: none;
+    transform: scale(2.2);
+    opacity: 0.85;
+  }
+
+  .results-map-ripple-layer .ripple-ring:not(:first-of-type) {
+    display: none;
+  }
+}

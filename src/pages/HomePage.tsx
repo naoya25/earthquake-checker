@@ -15,8 +15,10 @@ import { Input } from "../components/Input";
 import { Select } from "../components/Select";
 import { Card } from "../components/Card";
 import earthquakeData from "../data/earthquakes.json";
+import { INTENSITY_BADGE_CLASS } from "../constants/intensityColors";
 
 const MapSelector = lazy(() => import("../components/MapSelector"));
+const ResultsMap = lazy(() => import("../components/ResultsMap"));
 
 type InputMode = "map" | "latlng" | "address";
 
@@ -47,17 +49,6 @@ type FilterState = {
   yearTo: string;
   galMin: string;
   galMax: string;
-};
-
-const INTENSITY_COLOR: Record<number, string> = {
-  0: "bg-gray-400",
-  1: "bg-gray-500",
-  2: "bg-blue-400",
-  3: "bg-blue-600",
-  4: "bg-yellow-500",
-  5: "bg-orange-500",
-  6: "bg-red-500",
-  7: "bg-red-700",
 };
 
 const GROUND_TYPE_OPTIONS: { value: GroundType; label: string }[] = [
@@ -417,6 +408,25 @@ function HomePage() {
           </div>
         )}
 
+        {results !== null && results.length > 0 && coords && (
+          <Suspense
+            fallback={
+              <div
+                className="flex items-center justify-center text-ink-muted text-sm border-2 border-ink mb-6"
+                style={{ height: "360px" }}
+              >
+                地図を読み込み中...
+              </div>
+            }
+          >
+            <ResultsMap
+              buildingLat={coords.lat}
+              buildingLng={coords.lng}
+              earthquakes={results}
+            />
+          </Suspense>
+        )}
+
         {displayedResults !== null && (
           <Card className="overflow-hidden">
             <div className="px-6 py-4 border-b-2 border-ink flex flex-col sm:flex-row sm:items-center gap-3">
@@ -538,7 +548,7 @@ function HomePage() {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <span
-                            className={`inline-block font-bold px-2 py-0.5 text-white text-xs data-num ${INTENSITY_COLOR[eq.intensity]}`}
+                            className={`inline-block font-bold px-2 py-0.5 text-white text-xs data-num ${INTENSITY_BADGE_CLASS[eq.intensity]}`}
                           >
                             震度 {eq.intensity}
                           </span>
