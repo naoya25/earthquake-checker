@@ -50,12 +50,12 @@ type FilterState = {
 };
 
 const INTENSITY_COLOR: Record<number, string> = {
-  0: "bg-neutral-400",
-  1: "bg-neutral-500",
-  2: "bg-primary-light",
-  3: "bg-primary",
+  0: "bg-neutral-500",
+  1: "bg-neutral-600",
+  2: "bg-primary",
+  3: "bg-primary-dark",
   4: "bg-accent",
-  5: "bg-orange-500",
+  5: "bg-orange-600",
   6: "bg-error",
   7: "bg-red-800",
 };
@@ -72,18 +72,44 @@ const INPUT_MODE_TABS: { value: InputMode; label: string }[] = [
   { value: "address", label: "住所を入力" },
 ];
 
-const COLUMNS: { key: SortKey; label: string; align: "left" | "right" }[] = [
+const COLUMNS: {
+  key: SortKey;
+  label: string;
+  align: "left" | "right";
+  numeric?: boolean;
+}[] = [
   { key: "name", label: "地震名", align: "left" },
   { key: "occurred_date", label: "発生日", align: "left" },
-  { key: "magnitude", label: "マグニチュード", align: "right" },
-  { key: "distanceKm", label: "震央距離 (km)", align: "right" },
-  { key: "spectrum", label: "応答水平加速度 (gal)", align: "right" },
+  { key: "magnitude", label: "マグニチュード", align: "right", numeric: true },
+  { key: "distanceKm", label: "震央距離 (km)", align: "right", numeric: true },
+  {
+    key: "spectrum",
+    label: "応答水平加速度 (gal)",
+    align: "right",
+    numeric: true,
+  },
   { key: "intensity", label: "震度 (目安)", align: "right" },
 ];
 
 function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
-  if (!active) return <span className="ml-1 text-neutral-300">↕</span>;
-  return <span className="ml-1">{dir === "asc" ? "↑" : "↓"}</span>;
+  return (
+    <svg
+      viewBox="0 0 12 12"
+      className={`ml-1 inline-block h-3 w-3 align-[-1px] transition-transform duration-150 ease-standard ${
+        active ? "text-neutral-600" : "text-neutral-300"
+      } ${active && dir === "asc" ? "rotate-180" : ""}`}
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M3 4.5L6 7.5L9 4.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 }
 
 function HomePage() {
@@ -211,30 +237,38 @@ function HomePage() {
   }, [results, sortKey, sortDir, filter]);
 
   const coords = getLatLng();
+  const filterActive =
+    filter.yearFrom || filter.yearTo || filter.galMin || filter.galMax;
 
   return (
-    <div className="p-4">
+    <div className="p-4 sm:p-6">
       <div className="max-w-5xl mx-auto">
-        <Card className="p-8 mb-6">
-          <h1 className="text-2xl font-bold text-neutral-800 mb-2">
-            地震チェッカー
+        <Card className="p-6 sm:p-8 mb-6">
+          <h1 className="text-h1 text-neutral-900 mb-2">
+            建物の耐震性を今すぐ確認
           </h1>
           <p className="text-sm text-neutral-500 mb-6 leading-relaxed">
-            建物の所在地（緯度・経度）と地盤種別・固有周期を入力することで、過去に発生したすべての地震についての応答水平加速度（gal）と推定震度を一覧で確認できます。
+            所在地・地盤種別・固有周期を入力すると、過去に発生した既往地震
+            {earthquakes.length}件について、推定応答水平加速度（gal）と震度を一覧で確認できます。
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <div className="flex border border-neutral-200 rounded-xl overflow-hidden mb-3">
+              <div
+                role="tablist"
+                className="flex w-full rounded-lg bg-neutral-100 p-1 mb-3"
+              >
                 {INPUT_MODE_TABS.map((tab) => (
                   <button
                     key={tab.value}
                     type="button"
+                    role="tab"
+                    aria-selected={inputMode === tab.value}
                     onClick={() => setInputMode(tab.value)}
-                    className={`flex-1 py-2 text-sm font-medium transition-colors ${
+                    className={`flex-1 rounded-md py-2 text-sm font-medium transition-[background-color,box-shadow,color] duration-150 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
                       inputMode === tab.value
-                        ? "bg-primary text-white"
-                        : "bg-white text-neutral-500 hover:bg-neutral-50"
+                        ? "bg-surface text-neutral-900 shadow-sm"
+                        : "text-neutral-500 hover:text-neutral-700"
                     }`}
                   >
                     {tab.label}
@@ -246,7 +280,7 @@ function HomePage() {
                 <div>
                   <Suspense
                     fallback={
-                      <div className="h-80 flex items-center justify-center text-neutral-400 text-sm border border-neutral-200 rounded-xl">
+                      <div className="h-80 flex items-center justify-center text-neutral-400 text-sm border border-line rounded-lg">
                         地図を読み込み中...
                       </div>
                     }
@@ -261,12 +295,12 @@ function HomePage() {
                     />
                   </Suspense>
                   {mapLat !== null && mapLng !== null ? (
-                    <p className="text-xs text-neutral-500 mt-1.5">
+                    <p className="text-caption text-neutral-500 mt-1.5">
                       選択中: 緯度 {mapLat.toFixed(5)} / 経度{" "}
                       {mapLng.toFixed(5)}
                     </p>
                   ) : (
-                    <p className="text-xs text-neutral-400 mt-1.5">
+                    <p className="text-caption text-neutral-400 mt-1.5">
                       地図をクリックして場所を選択してください
                     </p>
                   )}
@@ -276,7 +310,7 @@ function HomePage() {
               {inputMode === "latlng" && (
                 <div className="flex gap-4">
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-neutral-700 mb-1">
+                    <label className="text-label font-medium text-neutral-700 mb-1 block">
                       緯度
                     </label>
                     <Input
@@ -290,7 +324,7 @@ function HomePage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-neutral-700 mb-1">
+                    <label className="text-label font-medium text-neutral-700 mb-1 block">
                       経度
                     </label>
                     <Input
@@ -308,7 +342,7 @@ function HomePage() {
 
               {inputMode === "address" && (
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  <label className="text-label font-medium text-neutral-700 mb-1 block">
                     住所
                   </label>
                   <AddressInput
@@ -321,7 +355,7 @@ function HomePage() {
                       setInputMode("latlng");
                     }}
                   />
-                  <p className="text-xs text-neutral-400 mt-1.5">
+                  <p className="text-caption text-neutral-400 mt-1.5">
                     住所を選択すると緯度経度が自動入力されます
                   </p>
                 </div>
@@ -329,7 +363,7 @@ function HomePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label className="text-label font-medium text-neutral-700 mb-1 block">
                 地盤種別
               </label>
               <Select
@@ -347,7 +381,7 @@ function HomePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label className="text-label font-medium text-neutral-700 mb-1 block">
                 固有周期 (s)
               </label>
               <Select
@@ -378,7 +412,7 @@ function HomePage() {
         </Card>
 
         {error && (
-          <div className="bg-error/5 border border-error/20 text-error rounded-xl p-4 mb-6 text-sm">
+          <div className="bg-error/5 border border-error/20 text-error rounded-lg p-4 mb-6 text-sm">
             エラー: {error}
           </div>
         )}
@@ -386,14 +420,14 @@ function HomePage() {
         {displayedResults !== null && (
           <Card className="overflow-hidden">
             <div className="px-6 py-4 border-b border-neutral-100 flex flex-col sm:flex-row sm:items-center gap-3">
-              <h2 className="text-lg font-semibold text-neutral-800 shrink-0">
+              <h2 className="text-h3 text-neutral-900 shrink-0">
                 計算結果
-                <span className="ml-2 text-sm font-normal text-neutral-500">
+                <span className="ml-2 text-sm font-normal text-neutral-500 tabular-nums">
                   {displayedResults.length} 件
                 </span>
               </h2>
               <div className="flex flex-wrap gap-2 items-center text-sm">
-                <span className="text-neutral-400 text-xs">年号:</span>
+                <span className="text-caption text-neutral-400">年号:</span>
                 <input
                   type="number"
                   placeholder="西暦から"
@@ -401,9 +435,9 @@ function HomePage() {
                   onChange={(e) =>
                     setFilter({ ...filter, yearFrom: e.target.value })
                   }
-                  className="w-24 border border-neutral-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-24 tabular-nums border border-line rounded-sm px-2 py-1 text-xs transition-[border-color,box-shadow] duration-100 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                 />
-                <span className="text-neutral-400 text-xs">〜</span>
+                <span className="text-caption text-neutral-400">〜</span>
                 <input
                   type="number"
                   placeholder="西暦まで"
@@ -411,9 +445,9 @@ function HomePage() {
                   onChange={(e) =>
                     setFilter({ ...filter, yearTo: e.target.value })
                   }
-                  className="w-24 border border-neutral-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-24 tabular-nums border border-line rounded-sm px-2 py-1 text-xs transition-[border-color,box-shadow] duration-100 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                 />
-                <span className="text-neutral-400 text-xs ml-2">gal:</span>
+                <span className="text-caption text-neutral-400 ml-2">gal:</span>
                 <input
                   type="number"
                   placeholder="最小"
@@ -421,9 +455,9 @@ function HomePage() {
                   onChange={(e) =>
                     setFilter({ ...filter, galMin: e.target.value })
                   }
-                  className="w-20 border border-neutral-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-20 tabular-nums border border-line rounded-sm px-2 py-1 text-xs transition-[border-color,box-shadow] duration-100 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                 />
-                <span className="text-neutral-400 text-xs">〜</span>
+                <span className="text-caption text-neutral-400">〜</span>
                 <input
                   type="number"
                   placeholder="最大"
@@ -431,12 +465,9 @@ function HomePage() {
                   onChange={(e) =>
                     setFilter({ ...filter, galMax: e.target.value })
                   }
-                  className="w-20 border border-neutral-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-20 tabular-nums border border-line rounded-sm px-2 py-1 text-xs transition-[border-color,box-shadow] duration-100 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                 />
-                {(filter.yearFrom ||
-                  filter.yearTo ||
-                  filter.galMin ||
-                  filter.galMax) && (
+                {filterActive && (
                   <button
                     onClick={() =>
                       setFilter({
@@ -446,7 +477,7 @@ function HomePage() {
                         galMax: "",
                       })
                     }
-                    className="text-xs text-neutral-400 hover:text-neutral-600 underline"
+                    className="text-caption text-neutral-400 hover:text-neutral-600 underline transition-colors duration-100 ease-standard"
                   >
                     クリア
                   </button>
@@ -459,18 +490,18 @@ function HomePage() {
                 条件に一致するデータがありません
               </p>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto overflow-y-auto max-h-[70vh]">
                 <table className="w-full text-sm">
-                  <thead>
+                  <thead className="sticky top-0 z-10">
                     <tr className="bg-neutral-50 text-neutral-500 text-xs">
-                      <th className="px-4 py-3 text-left text-neutral-400 font-normal w-10">
+                      <th className="px-4 py-3 text-left text-neutral-400 font-normal w-10 bg-neutral-50">
                         順位
                       </th>
                       {COLUMNS.map((col) => (
                         <th
                           key={col.key}
                           onClick={() => handleSort(col.key)}
-                          className={`px-4 py-3 cursor-pointer select-none hover:bg-neutral-100 transition-colors ${col.align === "right" ? "text-right" : "text-left"}`}
+                          className={`px-4 py-3 cursor-pointer select-none bg-neutral-50 font-medium transition-colors duration-100 ease-standard hover:bg-neutral-100 ${col.align === "right" ? "text-right" : "text-left"}`}
                         >
                           {col.label}
                           <SortIcon
@@ -485,27 +516,29 @@ function HomePage() {
                     {displayedResults.map((eq, i) => (
                       <tr
                         key={eq.id}
-                        className="hover:bg-neutral-50 transition-colors"
+                        className="transition-colors duration-100 ease-standard hover:bg-neutral-50"
                       >
-                        <td className="px-4 py-3 text-neutral-400">{i + 1}</td>
+                        <td className="px-4 py-3 text-neutral-400 tabular-nums">
+                          {i + 1}
+                        </td>
                         <td className="px-4 py-3 font-medium text-neutral-800">
                           {eq.name ?? "-"}
                         </td>
                         <td className="px-4 py-3 text-neutral-600">
                           {eq.occurred_date ?? "-"}
                         </td>
-                        <td className="px-4 py-3 text-right text-neutral-700">
+                        <td className="px-4 py-3 text-right tabular-nums text-neutral-700">
                           {eq.magnitude?.toFixed(1)}
                         </td>
-                        <td className="px-4 py-3 text-right text-neutral-700">
+                        <td className="px-4 py-3 text-right tabular-nums text-neutral-700">
                           {eq.distanceKm.toFixed(1)}
                         </td>
-                        <td className="px-4 py-3 text-right font-semibold text-primary">
+                        <td className="px-4 py-3 text-right tabular-nums font-semibold text-primary">
                           {Math.round(eq.spectrum)}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <span
-                            className={`inline-block font-bold px-2 py-0.5 rounded text-white text-xs ${INTENSITY_COLOR[eq.intensity]}`}
+                            className={`inline-block font-bold px-2 py-0.5 rounded text-white text-xs tabular-nums ${INTENSITY_COLOR[eq.intensity]}`}
                           >
                             震度 {eq.intensity}
                           </span>

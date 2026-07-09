@@ -8,11 +8,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const VARIANT_CLASSES: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary:
-    "bg-primary text-white hover:bg-primary-dark disabled:bg-primary-light shadow-sm hover:shadow-md focus:ring-primary",
+    "bg-primary text-white hover:bg-primary-dark disabled:bg-primary-light disabled:hover:bg-primary-light shadow-sm hover:shadow-md focus-visible:ring-primary",
   secondary:
-    "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 disabled:text-neutral-400 focus:ring-neutral-300",
+    "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 disabled:text-neutral-400 disabled:hover:bg-neutral-100 focus-visible:ring-neutral-300",
   ghost:
-    "bg-transparent text-primary hover:bg-primary/10 disabled:text-neutral-300 focus:ring-primary",
+    "bg-transparent text-primary hover:bg-primary/10 disabled:text-neutral-300 disabled:hover:bg-transparent focus-visible:ring-primary",
 };
 
 const SIZE_CLASSES: Record<NonNullable<ButtonProps["size"]>, string> = {
@@ -30,7 +30,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "font-semibold rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:shadow-none",
+        "font-semibold rounded-md transition-[background-color_100ms_var(--ease-standard),box-shadow_150ms_var(--ease-standard),transform_50ms_var(--ease-out-quart)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100",
         VARIANT_CLASSES[variant],
         SIZE_CLASSES[size],
         className,
