@@ -25,8 +25,8 @@ function Layout({ children }: Props) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+    <div className="min-h-screen flex flex-col bg-neutral-50">
+      <header className="bg-white border-b border-neutral-200 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link
             to="/"
@@ -37,7 +37,7 @@ function Layout({ children }: Props) {
               alt="icon"
               className="w-9 h-9 object-contain"
             />
-            <span className="text-lg font-bold text-gray-800 tracking-tight">
+            <span className="text-lg font-bold text-neutral-800 tracking-tight">
               地震チェッカー
             </span>
           </Link>
@@ -46,8 +46,8 @@ function Layout({ children }: Props) {
               to="/"
               className={`font-medium transition-colors ${
                 pathname === "/"
-                  ? "text-blue-600"
-                  : "text-gray-500 hover:text-gray-800"
+                  ? "text-primary"
+                  : "text-neutral-500 hover:text-neutral-800"
               }`}
             >
               ホーム
@@ -56,8 +56,8 @@ function Layout({ children }: Props) {
               to="/about"
               className={`font-medium transition-colors ${
                 pathname === "/about"
-                  ? "text-blue-600"
-                  : "text-gray-500 hover:text-gray-800"
+                  ? "text-primary"
+                  : "text-neutral-500 hover:text-neutral-800"
               }`}
             >
               このアプリについて
@@ -68,8 +68,8 @@ function Layout({ children }: Props) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="bg-white border-t border-gray-200 mt-auto">
-        <div className="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-400">
+      <footer className="bg-white border-t border-neutral-200 mt-auto">
+        <div className="max-w-5xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-neutral-400">
           <div className="flex items-center gap-2">
             <img
               src={`${import.meta.env.BASE_URL}icon.png`}

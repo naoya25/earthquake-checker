@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Input } from "./Input";
 
 type NominatimResult = {
   place_id: number;
@@ -55,23 +56,22 @@ function AddressInput({ onSelect }: Props) {
 
   return (
     <div className="relative">
-      <input
+      <Input
         type="text"
         placeholder="例: 東京都千代田区丸の内1丁目"
         value={query}
         onChange={handleChange}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       {loading && (
-        <p className="text-xs text-gray-400 mt-1">検索中...</p>
+        <p className="text-xs text-neutral-400 mt-1">検索中...</p>
       )}
       {candidates.length > 0 && (
-        <ul className="absolute z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
+        <ul className="absolute z-50 w-full bg-white border border-neutral-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
           {candidates.map((item) => (
             <li
               key={item.place_id}
               onClick={() => handleSelect(item)}
-              className="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-0"
+              className="px-4 py-2.5 text-sm text-neutral-700 hover:bg-primary/5 cursor-pointer border-b border-neutral-100 last:border-0"
             >
               {item.display_name}
             </li>
@@ -79,7 +79,7 @@ function AddressInput({ onSelect }: Props) {
         </ul>
       )}
       {selected && (
-        <p className="text-xs text-green-600 mt-1">✓ 座標を取得しました</p>
+        <p className="text-xs text-success mt-1">✓ 座標を取得しました</p>
       )}
     </div>
   );

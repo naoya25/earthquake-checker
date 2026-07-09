@@ -41,7 +41,7 @@ function MapSelector({ lat, lng, onSelect }: Props) {
 
   return (
     <div
-      className="rounded-xl overflow-hidden border border-gray-200"
+      className="rounded-xl overflow-hidden border border-neutral-200"
       style={{ height: "320px" }}
     >
       <MapContainer
