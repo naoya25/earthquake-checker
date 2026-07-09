@@ -9,8 +9,8 @@ import { ATTENUATION_COEFFICIENTS } from "../constants/attenuationCoefficients";
 import { calcDistance } from "../utils/distance";
 import { calcSpectrum } from "../utils/spectrum";
 import { spectrumToIntensity } from "../utils/intensity";
-import { supabase } from "../lib/supabase";
 import AddressInput from "../components/AddressInput";
+import earthquakeData from "../data/earthquakes.json";
 
 const MapSelector = lazy(() => import("../components/MapSelector"));
 
@@ -116,7 +116,9 @@ function HomePage() {
     return { lat, lng };
   };
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const earthquakes = earthquakeData as Earthquake[];
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const coords = getLatLng();
     if (!coords) {
@@ -126,18 +128,10 @@ function HomePage() {
     setLoading(true);
     setError(null);
 
-    const { data, error } = await supabase.from("earthquakes").select("*");
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
     const { a, b, c } =
       ATTENUATION_COEFFICIENTS[form.groundType][form.naturalPeriod];
 
-    const calculated: EarthquakeResult[] = (data as Earthquake[])
+    const calculated: EarthquakeResult[] = earthquakes
       .filter(
         (eq) =>
           eq.latitude != null && eq.longitude != null && eq.magnitude != null,

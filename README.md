@@ -11,7 +11,11 @@
 | フロントエンド   | React 19 + TypeScript + Vite            |
 | スタイリング     | Tailwind CSS v4                         |
 | ルーティング     | React Router v7                         |
-| データベース     | Supabase (PostgreSQL)                   |
+| データ           | 静的 JSON (`src/data/earthquakes.json`) |
 | 地図             | Leaflet + react-leaflet (OpenStreetMap) |
 | ジオコーディング | Nominatim API (OpenStreetMap)           |
 | デプロイ         | GitHub Pages + GitHub Actions           |
+
+## 地震データの更新
+
+地震データは `src/data/earthquakes.json` を直接編集します。Supabase などの外部データベースには依存していません。
